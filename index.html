@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+
+
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Тестовое задание PHP Junior</title>
+        <meta name = "viewport" content = "width=device-width">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+        <link rel="stylesheet" href="less/style.css">
+    </head>
+    <body>
+        <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Войти</a></li>
+            <li role="presentation"><a href="#home1" aria-controls="home1" role="tab" data-toggle="tab">Регистрация</a></li>
+        </ul>
+        <div class = "tab-content">
+            <div role="tabpanel" class="tab-pane fade in active" id="home">
+                <div class = "form-wrap">
+                    <div class = "logresult">
+                    </div>
+                    <form name="loginform" id="loginform" action="login.php">
+                        <div class="input-group">
+                            <input type="text" id = "log" class="form-control required default" placeholder="Логин">
+                        </div>
+                        <div class="input-group">
+                            <input type="password" id = "pass" class="form-control required default" placeholder="Пароль">
+                        </div>
+                        <div class="input-group">
+                            <input type="button" class = "btn" id = "btn-login" value="Войти">  
+                        </div>
+                    </form>            
+                </div>
+            </div>
+            <div role="tabpanel" class="tab-pane fade in" id="home1">
+                <div class = "form-wrap">
+                    <div class = "regresult">
+                    </div>
+                    <form name="regform" id="regform" action="registration.php">
+                        <div class="input-group">
+                            <input type="text" id = "reglog" class="form-control required default" placeholder="Логин">
+                        </div>
+                        <div class="input-group">
+                            <input type="password" id = "regpass" class="form-control required default" placeholder="Пароль">
+                        </div>
+                        <div class="input-group">
+                            <input type="button" class = "btn" id = "btn-reg" value="Регистрация">  
+                        </div>
+                    </form>            
+                </div>
+            </div>
+        </div>
+        <script src="jquery-1.11.3.min.js"></script>
+        <script src="bootstrap.min.js"></script>
+        <script>
+            $(document).ready(function(){
+                $("#btn-login").click(function(){
+                    $("#loginform").removeClass("error");
+                    $("span.error").remove();
+                    $("#loginform .required").each(function(){
+                        var input = $(this).val();
+                        var inputParent = $(this).parent();
+                        if (input == ""){
+                            inputParent.addClass("error").append('<span class="error">Обязательное поле.</span>'); 
+                        }
+                    });
+                    if($("span.error").length == "0") {
+                        $("#loginform").submit(function(e) {
+                            var log = $("#log").val();
+                            var pass = $("#pass").val();
+                            var formURL = $(this).attr("action");
+                            $.ajax ({
+                                url: formURL,
+                                type: "GET",
+                                data: {login: log, pass: pass},
+                                success: function(html) {
+                                    $(".logresult").html(html);
+                                },
+                                error: function(jqXHR, textStatus, errorThrown){
+                                }    
+                            });
+                            e.preventDefault();	//STOP default action
+                        }); 
+                        $("#loginform").submit(); //SUBMIT FORM
+                    }
+                });
+                $("#btn-reg").click(function(){
+                    $("#regform").removeClass("error");
+                    $("span.error").remove();
+                    $("#regform .required").each(function(){
+                        var input = $(this).val();
+                        var inputParent = $(this).parent();
+                        if (input == ""){
+                            inputParent.addClass("error").append('<span class="error">Обязательное поле.</span>'); 
+                        }
+                    });
+                    if($("span.error").length == "0") {
+                        $("#regform").submit(function(e) {
+                            var log = $("#reglog").val();
+                            var pass = $("#regpass").val();
+                            var formURL = $(this).attr("action");
+                            $.ajax ({
+                                url: formURL,
+                                type: "GET",
+                                data: {login: log, pass: pass},
+                                success: function(html) {
+                                    $(".regresult").html(html);
+                                },
+                                error: function(jqXHR, textStatus, errorThrown){
+                                }    
+                            });
+                            e.preventDefault();	//STOP default action
+                        }); 
+                        $("#regform").submit(); //SUBMIT FORM
+                    }
+                });
+            });
+        </script>
+    </body>
+</html>
